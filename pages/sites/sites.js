@@ -11,7 +11,7 @@ export async function initSites() {
     const filteredSites = sites.filter(
       (site) =>
         site.name.toLowerCase().includes(searchTerm) ||
-        site.id.toString().includes(searchTerm)
+        site.displayName.toLowerCase().includes(searchTerm)
     );
     renderSites(filteredSites);
   });

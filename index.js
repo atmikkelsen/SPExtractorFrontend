@@ -3,14 +3,14 @@ import "https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js";
 
 import { setActiveLink, renderHtml, loadHtml } from "./utils.js";
 
-import { initSites } from "./pages/hotels/hotels.js";
+import { initSites } from "./pages/sites/sites.js";
 import { initAddHotels } from "./pages/addHotel/addHotel.js";
 import { initEditHotel } from "./pages/editHotel/editHotel.js";
 import { initAddGuest } from "./pages/addGuest/addGuest.js";
 
 window.addEventListener("load", async () => {
   const templateHome = await loadHtml("./pages/home/home.html");
-  const templateHotels = await loadHtml("./pages/hotels/hotels.html");
+  const templateSites = await loadHtml("./pages/sites/sites.html");
   const templateAddHotel = await loadHtml("./pages/addHotel/addHotel.html");
   const templateEditHotel = await loadHtml("./pages/editHotel/editHotel.html");
   const templateAddGuest = await loadHtml("./pages/addGuest/addGuest.html");
@@ -32,8 +32,8 @@ window.addEventListener("load", async () => {
            <br/
            <p>Goto this page (will take you out of the router) <a href="/indexNoNavigoDemo.html">Plain no Navigo example</a></p>
            `),
-      "/hotels": (match) => {
-        renderHtml(templateHotels, "content");
+      "/sites": (match) => {
+        renderHtml(templateSites, "content");
         initSites(match);
       },
       "/addHotel": (match) => {

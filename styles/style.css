@@ -2,3 +2,59 @@ ul a.active {
   font-weight: bold;
   color: rgb(0, 0, 0);
 }
+body {
+  font-family: "Poppins", sans-serif;
+  color: #400000; /* Default text color */
+
+}
+
+.template {
+  font-family: "Poppins", sans-serif;
+  color: #400000; /* Default text color */
+}
+
+.template h2 {
+  color: #400000; /* Blue heading color */
+}
+
+.template input {
+  background-color: #EFE6DD; /* Light gray background */
+  color: #333333; /* Dark gray text */
+  border: 1px solid #CCCCCC; /* Light gray border */
+  padding: 8px;
+}
+
+.template table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.template table th {
+  background-color: #EAAE93; /* Blue header background */
+  color: white; /* White text */
+  padding: 8px;
+}
+
+.template table td {
+  border: 1px solid #F4F1F0; /* Light gray border */
+  padding: 8px;
+}
+
+.template table tr:nth-child(even) {
+  background-color: #F4F1F0; /* Light gray for even rows */
+}
+
+.template table tr:nth-child(odd) {
+  background-color: #FFFFFF; /* White for odd rows */
+}
+
+#error {
+  color: #FF0000; /* Bright red error text */
+}
+
+.navbar {
+  background-color: #EFE6DD; /* Blue background */
+  
+}

@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QuickBook</title>
-    <link rel="stylesheet" href="styles/style.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
     <link
       rel="stylesheet"
@@ -14,10 +13,16 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"
     />
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/style.css" />
+
     <script src="index.js" type="module"></script>
   </head>
 
-  <body style="font-family: sans-serif">
+  <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <ul id="menu" class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -26,7 +31,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="/hotels" data-navigo>All Hotels</a>
+            <a class="nav-link" href="/sites" data-navigo>All Sites</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/addHotel" data-navigo>Add Hotel</a>
@@ -37,7 +42,6 @@
         </ul>
       </div>
     </nav>
-    <hr />
     <div
       style="margin-left: 50px; margin-right: auto; width: 80%"
       id="content"

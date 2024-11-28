@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SharePoint Sites</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/style.css" />
+  
+  </style>
+</head>
+<body>
+  <div class="template">
+    <h2>Displays all SharePoint sites</h2>
+
+    <input type="text" id="searchBar" placeholder="Search by name or ID..." />
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Display name</th>
+          <th>URL</th>
+          <th>WebUrl</th>
+        </tr>
+      </thead>
+      <tbody id="table-rows"></tbody>
+    </table>
+    <p id="error" style="color: red"></p>
+    <script type="module" src="pages/sites/sites.js"></script>
+  </div>
+</body>
+</html>
