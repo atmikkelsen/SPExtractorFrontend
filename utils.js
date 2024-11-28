@@ -83,7 +83,7 @@ export function sanitizeStringWithTableRows(tableRows) {
   return secureRows;
 }
 
-export function makeOptions(method, body, addToken) {
+export function makeOptions(method, body, addToken, testToken = null) {
   const opts = {
     method: method,
     headers: {
@@ -94,8 +94,14 @@ export function makeOptions(method, body, addToken) {
   if (body) {
     opts.body = JSON.stringify(body);
   }
-  if (addToken && localStorage.getItem("token")) {
-    opts.headers.Authorization = "Bearer " + localStorage.getItem("token");
+  if (addToken) {
+    const token = testToken || localStorage.getItem("token");
+    if (token) {
+      opts.headers.Authorization = "Bearer " + token;
+    } else {
+      throw new Error("No token found for Authorization");
+    }
   }
   return opts;
 }
+

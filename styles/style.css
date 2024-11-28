@@ -1,27 +1,36 @@
 ul a.active {
-  font-weight: bold;
-  color: rgb(0, 0, 0);
+  color: #400000;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaae93;
+  transition: border-color 0.5s, box-shadow 0.5s, background-color 0.5s,
+    color 0.5s;
 }
 body {
   font-family: "Poppins", sans-serif;
-  color: #400000; /* Default text color */
-
+  color: #400000;
+  background-color: #f4f1f0;
 }
 
 .template {
   font-family: "Poppins", sans-serif;
-  color: #400000; /* Default text color */
+  color: #400000;
 }
 
 .template h2 {
-  color: #400000; /* Blue heading color */
+  color: #400000;
+  font-family: "Poppins", sans-serif;
 }
 
 .template input {
-  background-color: #EFE6DD; /* Light gray background */
-  color: #333333; /* Dark gray text */
-  border: 1px solid #CCCCCC; /* Light gray border */
+  background-color: #efe6dd;
+  color: #400000;
+  border: 1px solid #cccccc;
   padding: 8px;
+  border-radius: 50px;
+  height: 30px;
+  width: 40%;
 }
 
 .template table {
@@ -29,32 +38,112 @@ body {
   border-collapse: collapse;
   border-radius: 10px;
   overflow: hidden;
+  border: 1px solid #eaae93;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
 }
 
 .template table th {
-  background-color: #EAAE93; /* Blue header background */
-  color: white; /* White text */
+  background-color: #eaae93;
   padding: 8px;
+  border: 1px solid #eaae93;
+  color: #400000;
+  font-weight: bold;
 }
 
 .template table td {
-  border: 1px solid #F4F1F0; /* Light gray border */
+  border: 1px solid #f4f1f0;
   padding: 8px;
+  color: #400000;
+}
+.template table tbody tr:hover {
+  background-color: #eaae93;
+  transition: background-color 0.5s;
 }
 
 .template table tr:nth-child(even) {
-  background-color: #F4F1F0; /* Light gray for even rows */
+  background-color: #f4f1f0;
 }
 
 .template table tr:nth-child(odd) {
-  background-color: #FFFFFF; /* White for odd rows */
+  background-color: #ffffff;
 }
 
 #error {
-  color: #FF0000; /* Bright red error text */
+  color: #ff0000;
 }
 
 .navbar {
-  background-color: #EFE6DD; /* Blue background */
-  
+  background-color: #efe6dd;
+}
+
+.button-small {
+  padding: 0.25rem 1rem;
+  color: #400000;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaae93;
+  transition: border-color 0.5s, box-shadow 0.5s, background-color 0.5s,
+    color 0.5s;
+}
+
+.navbar a {
+  color: #eaae93;
+  padding: 0.25rem 1rem;
+  border-radius: 10px;
+}
+
+.navbar a:focus,
+.navbar a:hover {
+  color: #400000;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaae93;
+  transition: border-color 0.5s, box-shadow 0.5s, background-color 0.5s,
+    color 0.5s;
+}
+
+.navbar a:active {
+  color: #400000;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaae93;
+  transition: border-color 0.5s, box-shadow 0.5s, background-color 0.5s,
+    color 0.5s;
+}
+
+.edit-button {
+  color: #400000;
+}
+
+#searchBar {
+  width: 100%;
+  max-width: 300px;
+  color: #400000;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaae93;
+  transition: border-color 0.5s, box-shadow 0.5s, background-color 0.5s,
+    color 0.5s;
+}
+
+#searchBar:focus {
+  border-color: #d15b2f;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none;
+}
+
+#searchBar::placeholder {
+  color: #400000;
+  font-style: italic;
+}
+
+.search-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
 }

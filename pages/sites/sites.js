@@ -1,20 +1,35 @@
-import { sanitizeStringWithTableRows } from "../../utils.js";
-import { API_URL } from "../../settings.js";
+import { sanitizeStringWithTableRows, makeOptions } from "../../utils.js";
+import { API_URL, TEST_TOKEN } from "../../settings.js";
 const API_ENDPOINT = `${API_URL}/sites`;
 
 export async function initSites() {
-  const sites = await fetch(API_ENDPOINT).then((res) => res.json());
-  renderSites(sites);
-
-  document.getElementById("searchBar").addEventListener("input", (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    const filteredSites = sites.filter(
-      (site) =>
-        site.name.toLowerCase().includes(searchTerm) ||
-        site.displayName.toLowerCase().includes(searchTerm)
+  try {
+    const response = await fetch(
+      API_ENDPOINT,
+      makeOptions("GET", null, true, TEST_TOKEN)
     );
-    renderSites(filteredSites);
-  });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Unknown error occurred");
+    }
+
+    const sites = await response.json();
+    renderSites(sites);
+
+    document.getElementById("searchBar").addEventListener("input", (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const filteredSites = sites.filter(
+        (site) =>
+          site.displayName.toLowerCase().includes(searchTerm) ||
+          site.webUrl.toLowerCase().includes(searchTerm)
+      );
+      renderSites(filteredSites);
+    });
+  } catch (error) {
+    console.error("Error fetching sites:", error.message);
+    document.getElementById("error").textContent = error.message;
+  }
 }
 
 function renderSites(sites) {

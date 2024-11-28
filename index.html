@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QuickBook</title>
+    <title>SPExtractor</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
     <link
       rel="stylesheet"
@@ -18,26 +18,25 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles/style.css" />
-
+    <script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
     <script src="index.js" type="module"></script>
   </head>
 
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
-        <ul id="menu" class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="/" data-navigo>Home</a>
-          </li>
+        <ul id="menu" class="navbar">
+          <!-- Left-aligned menu items -->
+          <li><a href="/" data-navigo>Home</a></li>
+          <li><a href="/sites" data-navigo>All Sites</a></li>
+<!--           <li><a href="/addHotel" data-navigo>Add Hotel</a></li>
+          <li><a href="/addGuest" data-navigo>Add Guest</a></li> -->
+      
 
-          <li class="nav-item">
-            <a class="nav-link" href="/sites" data-navigo>All Sites</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/addHotel" data-navigo>Add Hotel</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/addGuest" data-navigo>Add Guest</a>
+          <li style="margin-left: auto;">
+            <button id="loginButton" class="contrast button-small">Log In</button>
+            <button id="logoutButton" class="contrast button-small" style="display: none;">Log Out</button>
+            
           </li>
         </ul>
       </div>
