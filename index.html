@@ -27,16 +27,23 @@
       <div class="container-fluid">
         <ul id="menu" class="navbar">
           <!-- Left-aligned menu items -->
-          <li><a href="/" data-navigo>Home</a></li>
-          <li><a href="/sites" data-navigo>All Sites</a></li>
-<!--           <li><a href="/addHotel" data-navigo>Add Hotel</a></li>
-          <li><a href="/addGuest" data-navigo>Add Guest</a></li> -->
-      
+          <li><a href="/" data-navigo>Hjem</a></li>
+          <li><a href="/sites" data-navigo>Vis alle mine sider</a></li>
+          <li id="current-site-tab" style="display: none">
+            <a href="#" data-navigo>Current Site</a>
+          </li>
 
-          <li style="margin-left: auto;">
-            <button id="loginButton" class="contrast button-small">Log In</button>
-            <button id="logoutButton" class="contrast button-small" style="display: none;">Log Out</button>
-            
+          <li style="margin-left: auto">
+            <button id="loginButton" class="contrast button-small">
+              Log In
+            </button>
+            <button
+              id="logoutButton"
+              class="contrast button-small"
+              style="display: none"
+            >
+              Log Out
+            </button>
           </li>
         </ul>
       </div>

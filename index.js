@@ -5,16 +5,14 @@ import { setActiveLink, renderHtml, loadHtml } from "./utils.js";
 import { loginAndGetToken, logout } from "./auth.js";
 
 import { initSites } from "./pages/sites/sites.js";
-/* import { initAddHotels } from "./pages/addHotel/addHotel.js";
-import { initEditHotel } from "./pages/editHotel/editHotel.js";
-import { initAddGuest } from "./pages/addGuest/addGuest.js"; */
+import { initDrives } from "./pages/drives/drives.js";
+
 
 window.addEventListener("load", async () => {
   const templateHome = await loadHtml("./pages/home/home.html");
   const templateSites = await loadHtml("./pages/sites/sites.html");
-  //const templateAddHotel = await loadHtml("./pages/addHotel/addHotel.html");
-  //const templateEditHotel = await loadHtml("./pages/editHotel/editHotel.html");
-  //const templateAddGuest = await loadHtml("./pages/addGuest/addGuest.html");
+  const templateDrives = await loadHtml("./pages/drives/drives.html");
+
 
   const router = new Navigo("/", { hash: true });
   window.router = router;
@@ -22,6 +20,10 @@ window.addEventListener("load", async () => {
     .hooks({
       before(done, match) {
         setActiveLink("menu", match.url);
+        const currentSiteTab = document.getElementById("current-site-tab");
+        if (!match.url.startsWith("/drives/")) {
+          currentSiteTab.style.display = "none";
+        }
         done();
       },
     })
@@ -37,18 +39,10 @@ window.addEventListener("load", async () => {
         renderHtml(templateSites, "content");
         initSites(match);
       },
-/*       "/addHotel": (match) => {
-        renderHtml(templateAddHotel, "content");
-        initAddHotels(match);
-      },
-      "/hotel/:hotelId": (match) => {
-        renderHtml(templateEditHotel, "content");
-        initEditHotel(match);
-      },
-      "/addGuest": (match) => {
-        renderHtml(templateAddGuest, "content");
-        initAddGuest(match);
-      }, */
+      "/drives/:siteId": (match) => {
+        renderHtml(templateDrives, "content");
+        initDrives(match.data.siteId);
+      }
     })
     .notFound(
       () =>

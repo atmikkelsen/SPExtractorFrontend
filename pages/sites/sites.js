@@ -36,9 +36,9 @@ function renderSites(sites) {
   const tableRows = sites.map(
     (site) => `
       <tr>
-      <td>${site.displayName}</td>
-      <td>${site.webUrl}</td>
-      <td><a href="#/site/${site.id}" class="edit-button">Edit</a></td>
+      <td><a href="#/drives/${site.id}" class="edit-button">${site.displayName}</a></td>
+      <td><a href="#/drives/${site.id}" class="edit-button">${site.webUrl}</a></td>
+      <td><a href="#/drives/${site.id}" class="edit-button">Edit</a></td>
       </tr>
     `
   );
