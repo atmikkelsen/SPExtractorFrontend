@@ -6,12 +6,14 @@ import { loginAndGetToken, logout } from "./auth.js";
 
 import { initSites } from "./pages/sites/sites.js";
 import { initDrives } from "./pages/drives/drives.js";
+import { initFiles } from "./pages/files/files.js";
 
 
 window.addEventListener("load", async () => {
   const templateHome = await loadHtml("./pages/home/home.html");
   const templateSites = await loadHtml("./pages/sites/sites.html");
   const templateDrives = await loadHtml("./pages/drives/drives.html");
+  const templateFiles = await loadHtml("./pages/files/files.html");
 
 
   const router = new Navigo("/", { hash: true });
@@ -21,8 +23,10 @@ window.addEventListener("load", async () => {
       before(done, match) {
         setActiveLink("menu", match.url);
         const currentSiteTab = document.getElementById("current-site-tab");
-        if (!match.url.startsWith("/drives/")) {
+        const currentDriveTab = document.getElementById("current-drive-tab");
+        if (match.url.startsWith("/sites/")) {
           currentSiteTab.style.display = "none";
+          currentDriveTab.style.display = "none";
         }
         done();
       },
@@ -42,7 +46,12 @@ window.addEventListener("load", async () => {
       "/drives/:siteId": (match) => {
         renderHtml(templateDrives, "content");
         initDrives(match.data.siteId);
+      },
+      "/files/:driveId": (match) => {
+        renderHtml(templateFiles, "content");
+        initFiles(match.data.driveId);
       }
+
     })
     .notFound(
       () =>

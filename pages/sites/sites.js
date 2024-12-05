@@ -35,7 +35,7 @@ export async function initSites() {
 function renderSites(sites) {
   const tableRows = sites.map(
     (site) => `
-      <tr>
+      <tr><a href="#/drives/${site.id}" class="edit-button"</a>
       <td><a href="#/drives/${site.id}" class="edit-button">${site.displayName}</a></td>
       <td><a href="#/drives/${site.id}" class="edit-button">${site.webUrl}</a></td>
       <td><a href="#/drives/${site.id}" class="edit-button">Edit</a></td>

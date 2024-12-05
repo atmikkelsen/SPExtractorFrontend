@@ -90,6 +90,8 @@ export function makeOptions(method, body, addToken, testToken = null) {
       "Content-type": "application/json",
       Accept: "application/json",
     },
+    mode: "cors",
+    credentials: "include",
   };
   if (body) {
     opts.body = JSON.stringify(body);

@@ -54,10 +54,10 @@ function renderDrives(drives) {
 
     return `
       <tr>
-        <td>${drive.name}</td>
-        <td>${drive.webUrl}</td>
-        <td>${formattedDate}</td>
-        <td><a href="#/drives/${drive.id}" class="edit-button">Edit</a></td>
+        <td><a href="#/files/${drive.id}" class="edit-button">${drive.name}</a></td>
+        <td><a href="#/files/${drive.id}" class="edit-button">${drive.webUrl}</a></td>
+        <td><a href="#/files/${drive.id}" class="edit-button">${formattedDate}</a></td>
+        <td><a href="#/files/${drive.id}" class="edit-button">Edit</a></td>
       </tr>
     `;
   });

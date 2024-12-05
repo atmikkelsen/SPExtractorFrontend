@@ -86,6 +86,16 @@ body {
   background-color: #efe6dd;
 }
 
+.navbar-brand {
+  display: flex;
+  align-items: left;
+}
+
+.navbar-logo {
+  max-height: 40px; /* Adjust as needed */
+}
+
+
 .button-small {
   padding: 0.25rem 1rem;
   color: #400000;
