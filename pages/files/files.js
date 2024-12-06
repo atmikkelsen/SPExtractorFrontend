@@ -104,6 +104,7 @@ function renderFiles(files) {
         <td><a href="${file.webUrl}" target="_blank">${truncatedUrl}</a></td>
         <td>${fileSize}</td>
         <td>${formattedDate}</td>
+        <td>${file.lastModifiedByDisplayName}</td>
       </tr>
     `;
   });
