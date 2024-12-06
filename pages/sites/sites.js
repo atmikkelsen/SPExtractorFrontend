@@ -3,7 +3,11 @@ import { API_URL, TEST_TOKEN } from "../../settings.js";
 const API_ENDPOINT = `${API_URL}/sites`;
 
 export async function initSites() {
+  const spinner = document.getElementById("loading-spinner");
+
   try {
+    spinner.style.display = "block";
+
     const response = await fetch(
       API_ENDPOINT,
       makeOptions("GET", null, true, TEST_TOKEN)
@@ -29,6 +33,8 @@ export async function initSites() {
   } catch (error) {
     console.error("Error fetching sites:", error.message);
     document.getElementById("error").textContent = error.message;
+  } finally {
+    spinner.style.display = "none";
   }
 }
 

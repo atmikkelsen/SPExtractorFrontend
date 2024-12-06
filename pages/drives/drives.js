@@ -3,9 +3,16 @@ import { API_URL, TEST_TOKEN } from "../../settings.js";
 const API_ENDPOINT = `${API_URL}/drives`;
 
 export async function initDrives(siteId) {
+  const spinner = document.getElementById("loading-spinner");
+
   try {
+    spinner.style.display = "block";
+
     // Fetch site details
-    const siteResponse = await fetch(`${API_URL}/sites/${siteId}`, makeOptions("GET", null, true, TEST_TOKEN));
+    const siteResponse = await fetch(
+      `${API_URL}/sites/${siteId}`,
+      makeOptions("GET", null, true, TEST_TOKEN)
+    );
     if (!siteResponse.ok) {
       const errorData = await siteResponse.json();
       throw new Error(errorData.message || "Failed to fetch site details");
@@ -19,11 +26,16 @@ export async function initDrives(siteId) {
     currentSiteTab.querySelector("a").setAttribute("href", `/drives/${siteId}`);
 
     // Highlight the active tab
-    document.querySelectorAll("#menu a").forEach((link) => link.classList.remove("active"));
+    document
+      .querySelectorAll("#menu a")
+      .forEach((link) => link.classList.remove("active"));
     currentSiteTab.querySelector("a").classList.add("active");
 
     // Fetch drives for the site
-    const response = await fetch(`${API_ENDPOINT}?siteId=${siteId}`, makeOptions("GET", null, true, TEST_TOKEN));
+    const response = await fetch(
+      `${API_ENDPOINT}?siteId=${siteId}`,
+      makeOptions("GET", null, true, TEST_TOKEN)
+    );
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || "Failed to fetch drives");
@@ -44,6 +56,8 @@ export async function initDrives(siteId) {
   } catch (error) {
     console.error("Error fetching drives:", error.message);
     document.getElementById("error").textContent = error.message;
+  } finally {
+    spinner.style.display = "none";
   }
 }
 
