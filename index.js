@@ -1,95 +1,194 @@
-import "https://unpkg.com/navigo"; //Will create the global Navigo object used below
-import "https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js";
-
-import { setActiveLink, renderHtml, loadHtml } from "./utils.js";
-import { loginAndGetToken, logout } from "./auth.js";
-
-import { initSites } from "./pages/sites/sites.js";
-import { initDrives } from "./pages/drives/drives.js";
+import "https://unpkg.com/navigo";
+import { setActiveLink, renderHtml, loadHtml } from "./utils/utils.js";
+import { loginAndGetToken, logout } from "./server/auth.js";
+import { initSites, fetchSite } from "./pages/sites/sites.js";
+import { initDrives, fetchDrive } from "./pages/drives/drives.js";
 import { initFiles } from "./pages/files/files.js";
 
+let siteName = ""; // Store the current site name globally
+let driveName = ""; // Store the current drive name globally
 
+function updateTabs(route, siteId = null, driveId = null) {
+  const currentSiteTab = document.getElementById("current-site-tab");
+  const currentDriveTab = document.getElementById("current-drive-tab");
+
+  // Hide both tabs initially
+  currentSiteTab.style.display = "none";
+  currentDriveTab.style.display = "none";
+
+  if (route === "sites") {
+    currentSiteTab.style.display = "inline";
+    currentSiteTab.querySelector("a").textContent = "Mine sider";
+    currentSiteTab.querySelector("a").setAttribute("href", "#/sites");
+    currentSiteTab.querySelector("a").classList.add("active");
+  } else if (route === "drives" && siteId) {
+    currentSiteTab.style.display = "inline";
+    currentSiteTab.querySelector("a").textContent = siteName || "Site";
+    currentSiteTab.querySelector("a").setAttribute("href", `#/drives/${siteId}`);
+    currentSiteTab.querySelector("a").classList.add("active");
+  } else if (route === "files" && driveId) {
+    currentSiteTab.style.display = "inline";
+    currentSiteTab.querySelector("a").textContent = siteName || "Unknown Site";
+    currentSiteTab.querySelector("a").setAttribute("href", `#/drives/${siteId || ''}`);
+    currentSiteTab.querySelector("a").classList.remove("active");
+
+    currentDriveTab.style.display = "inline";
+    currentDriveTab.querySelector("a").textContent = driveName || "Drive";
+    currentDriveTab.querySelector("a").setAttribute("href", `#/files/${driveId}`);
+    currentDriveTab.querySelector("a").classList.add("active");
+  }
+}
+
+// Router initialization
 window.addEventListener("load", async () => {
-  const templateHome = await loadHtml("./pages/home/home.html");
-  const templateSites = await loadHtml("./pages/sites/sites.html");
-  const templateDrives = await loadHtml("./pages/drives/drives.html");
-  const templateFiles = await loadHtml("./pages/files/files.html");
-
+  const templates = {
+    home: await loadHtml("./pages/home/home.html"),
+    sites: await loadHtml("./pages/sites/sites.html"),
+    drives: await loadHtml("./pages/drives/drives.html"),
+    files: await loadHtml("./pages/files/files.html"),
+  };
 
   const router = new Navigo("/", { hash: true });
-  window.router = router;
+
   router
     .hooks({
       before(done, match) {
-        setActiveLink("menu", match.url);
-        const currentSiteTab = document.getElementById("current-site-tab");
-        const currentDriveTab = document.getElementById("current-drive-tab");
-        if (match.url.startsWith("/sites/")) {
-          currentSiteTab.style.display = "none";
-          currentDriveTab.style.display = "none";
+        try {
+          setActiveLink("menu", match.url);
+
+          // Parse route and call updateTabs
+          const route = match.url.split("/")[1];
+          const siteId = match.data?.siteId || null; // Optional
+          const driveId = match.data?.driveId || null; // Optional
+
+          updateTabs(route, siteId, driveId); // Safely pass siteId only when available
+        } catch (error) {
+          console.error("Error in before hook:", error.message);
+          displayError("An error occurred during navigation.");
         }
         done();
       },
     })
     .on({
-      "/": () => renderHtml(templateHome, "content"),
-      "/no-navigo": () =>
-        (document.getElementById("content").innerHTML = `
-           <h3>Handling navigation on the client, if you don't like navigo</h3>
-           <br/
-           <p>Goto this page (will take you out of the router) <a href="/indexNoNavigoDemo.html">Plain no Navigo example</a></p>
-           `),
-      "/sites": (match) => {
-        renderHtml(templateSites, "content");
-        initSites(match);
+      "/": () => {
+        try {
+          renderHtml(templates.home, "content");
+        } catch (error) {
+          console.error("Error rendering home page:", error.message);
+          displayError("Failed to load the home page.");
+        }
       },
-      "/drives/:siteId": (match) => {
-        renderHtml(templateDrives, "content");
-        initDrives(match.data.siteId);
+      "/sites": () => {
+        try {
+          renderHtml(templates.sites, "content");
+          initSites();
+        } catch (error) {
+          console.error("Error initializing sites:", error.message);
+          displayError("Failed to load sites.");
+        }
       },
-      "/files/:driveId": (match) => {
-        renderHtml(templateFiles, "content");
-        initFiles(match.data.driveId);
-      }
+      "/drives/:siteId": async (match) => {
+        renderHtml(templates.drives, "content");
 
+        const siteId = match.data.siteId;
+        try {
+          const site = await fetchSite(siteId); // Fetch site details
+          siteName = site.displayName; // Store siteName globally
+          updateTabs("drives", siteId, null); // Update tabs
+          initDrives(siteId); // Initialize drives for the site
+        } catch (error) {
+          console.error("Error fetching site:", error.message);
+
+          // Display the error message in the UI
+          displayError(error.message || "Failed to load site details.");
+        }
+      },
+      "/files/:driveId": async (match) => {
+        renderHtml(templates.files, "content");
+
+        const driveId = match.data.driveId;
+        try {
+          const drive = await fetchDrive(driveId); // Fetch drive details
+          driveName = drive.name; // Store drive name globally
+          siteName = drive.siteName; // Store site name globally (if available)
+          updateTabs("files", null, driveId);
+          initFiles(driveId);
+        } catch (error) {
+          console.error("Error fetching drive or initializing files:", error.message);
+          displayError(error.message || "Failed to load drive or file details.");
+        }
+      },
     })
-    .notFound(
-      () =>
-        (document.getElementById("content").innerHTML =
-          "<h2>404 - Page not found</h2>")
+    .notFound(() =>
+      document.getElementById("content").innerHTML = "<h2>404 - Page not found</h2>"
     )
     .resolve();
+
+    if (window.location.hash === "#/#/sites") {
+      renderHtml(templates.sites, "content");
+      initSites();
+    }
 });
 
 document.getElementById("loginButton").addEventListener("click", async () => {
   try {
-    await loginAndGetToken();
+    const token = await loginAndGetToken(); // Replace with your actual login logic
+    localStorage.setItem("authToken", token); // Store the token in localStorage
     alert("Login successful!");
-    document.getElementById("loginButton").style.display = "none";
-    document.getElementById("logoutButton").style.display = "inline";
+    updateLoginStatus(); // Update the UI
   } catch (error) {
-    console.error("Login failed:", error);
+    console.error("Login failed:", error.message);
+    alert("Login failed. Please try again.");
   }
 });
 
+// Handle logout button click
 document.getElementById("logoutButton").addEventListener("click", () => {
-  logout();
-  alert("Logged out successfully!");
-  document.getElementById("loginButton").style.display = "inline";
-  document.getElementById("logoutButton").style.display = "none";
+  try {
+    localStorage.removeItem("authToken"); // Remove the token from localStorage
+    logout();
+    alert("Logged out successfully!");
+    updateLoginStatus(); // Update the UI
+  } catch (error) {
+    console.error("Logout failed:", error.message);
+    alert("Logout failed. Please try again.");
+  }
 });
 
-window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
+window.onerror = (errorMsg, url, lineNumber, column, errorObj) => {
   alert(
-    "Error: " +
-      errorMsg +
-      " Script: " +
-      url +
-      " Line: " +
-      lineNumber +
-      " Column: " +
-      column +
-      " StackTrace: " +
-      errorObj
+    `Error: ${errorMsg} Script: ${url} Line: ${lineNumber} Column: ${column} StackTrace: ${errorObj}`
   );
 };
+
+window.addEventListener("load", () => {
+  updateLoginStatus();
+});
+
+function displayError(message) {
+  const errorElement = document.getElementById("error");
+  if (errorElement) {
+    console.log("Error displayed:", message); // Debug log
+    errorElement.textContent = message;
+    errorElement.style.display = "block"; // Ensure the error message is visible
+  } else {
+    console.error("Error element not found in the DOM.");
+  }
+}
+
+function updateLoginStatus() {
+  const loginButton = document.getElementById("loginButton");
+  const logoutButton = document.getElementById("logoutButton");
+
+  const token = localStorage.getItem("authToken"); // Check for token in localStorage
+
+  if (token) {
+    // User is logged in
+    loginButton.style.display = "none";
+    logoutButton.style.display = "inline";
+  } else {
+    // User is logged out
+    loginButton.style.display = "inline";
+    logoutButton.style.display = "none";
+  }
+}

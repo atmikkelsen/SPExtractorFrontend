@@ -189,3 +189,10 @@ body {
 }
 
 
+#menu li {
+  margin-right: 15px; /* Add spacing between navigation items */
+}
+
+#menu li a {
+  text-decoration: none; /* Ensure clean link styles */
+}
