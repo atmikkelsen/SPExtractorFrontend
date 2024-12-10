@@ -1,32 +1,31 @@
+body {
+  font-family: "Poppins", sans-serif;
+  color: #400000;
+  background-color: #f4f1f0;
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  
+}
+
 ul a.active {
   color: #400000;
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #eaae93;
-  transition: border-color 0.5s, box-shadow 0.5s, background-color 0.5s,
-    color 0.5s;
-}
+  transition: border-color 0.5s, box-shadow 0.5s, background-color 0.5s, color 0.5s;}
+  
 
-body {
-  font-family: "Poppins", sans-serif;
-  color: #400000;
-  background-color: #f4f1f0;
-  min-height: 100vh;
-  min-width: 100vh;
-  margin: 0;
-  display: flex;
-  flex-direction: column; 
-}
-
-.template {
-  font-family: "Poppins", sans-serif;
-  color: #400000;
-}
-
-.template h2 {
-  color: #400000;
-  font-family: "Poppins", sans-serif;
+ul a.active:hover {
+  background-color: #eaae93;
+  color: #f9f9f9;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  border: 1px solid #eaae93;
+  
 }
 
 .template input {
@@ -35,39 +34,77 @@ body {
   border: 1px solid #cccccc;
   padding: 8px;
   border-radius: 50px;
-  height: 30px;
   width: 40%;
+  transition: all 0.3s ease;
 }
+
+.template input:focus {
+  border-color: #eaae93;
+  box-shadow: 0 0 10px rgba(234, 174, 147, 0.7);
+}
+
+.navbar {
+  background-color: #efe6dd;
+
+}
+
+.navbar a {
+  color: #400000;
+  padding: 0.25rem rem;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  margin-right: 1px;
+}
+
+.navbar a:hover {
+  background-color: #f9f9f9;
+  color: #400000;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaae93;
+
+  transform: scale(1.1);
+}
+.navbar-logo {
+  max-height: 25px; /* Adjust as needed */
+}
+
+.template h2 {
+  color: #400000;
+  font-family: "Poppins", sans-serif;
+}
+
+
 
 .template table {
   border-collapse: collapse;
-  border-radius: 10px;
+  border-radius: 15px;
   overflow: hidden;
   border: 1px solid #eaae93;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  
 }
 
 .template table th {
   background-color: #eaae93;
+  color: #400000;
   padding: 8px;
   border: 1px solid #eaae93;
-  color: #400000;
   font-weight: bold;
   white-space: nowrap;
   text-align: left;
 }
 
-
 .template table td {
-  border: 1px solid #f4f1f0;
-  padding: 8px;
   color: #400000;
+  padding: 8px;
+  border: 1px solid #f4f1f0;
 }
+
 .template table tbody tr:hover {
   background-color: #eaae93;
   transition: background-color 0.5s;
 }
-
+  
 .template table tr:nth-child(even) {
   background-color: #f4f1f0;
 }
@@ -76,26 +113,6 @@ body {
   background-color: #ffffff;
 }
 
-
-
-#error {
-  color: #ff0000;
-}
-
-.navbar {
-  background-color: #efe6dd;
-}
-
-.navbar-brand {
-  display: flex;
-  align-items: left;
-}
-
-.navbar-logo {
-  max-height: 40px; /* Adjust as needed */
-}
-
-
 .button-small {
   padding: 0.25rem 1rem;
   color: #400000;
@@ -103,96 +120,73 @@ body {
   border-radius: 10px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #eaae93;
-  transition: border-color 0.5s, box-shadow 0.5s, background-color 0.5s,
-    color 0.5s;
+  transition: border-color 0.5s, box-shadow 0.5s, background-color 0.5s, color 0.5s;
 }
 
-.navbar a {
-  color: #eaae93;
-  padding: 0.25rem 1rem;
-  border-radius: 10px;
-}
-
-.navbar a:focus,
-.navbar a:hover {
-  color: #400000;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid #eaae93;
-  transition: border-color 0.5s, box-shadow 0.5s, background-color 0.5s,
-    color 0.5s;
-}
-
-.navbar a:active {
-  color: #400000;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid #eaae93;
-  transition: border-color 0.5s, box-shadow 0.5s, background-color 0.5s,
-    color 0.5s;
-}
-
-.edit-button {
-  color: #400000;
-}
-
-
-#searchBar {
-  width: 100%;
-  max-width: 300px; 
-  color: #400000;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1); 
-  border: 1px solid #eaae93; 
-  transition: border-color 0.5s, box-shadow 0.5s, background-color 0.5s,
-    color 0.5s; 
-}
-
-#searchBar:focus {
-  border-color: #d15b2f; 
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1); 
-  transition: border-color 0.3s, box-shadow 0.3s; 
-  outline: none; 
-}
-
-
-#searchBar::placeholder {
-  color: #400000;
-  font-style: italic;
-}
-
-.search-container {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
+.button-small:hover {
+  background-color: #eaae93;
+  color: #ffffff;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
 }
 
 .spinner {
-  border: 20px solid #eaae93; /* Light grey */
-  border-top: 20px solid #400000; /* Blue */
+  border: 20px solid #eaae93;
+  border-top: 20px solid #400000;
   border-radius: 50%;
   width: 200px;
   height: 200px;
   animation: spin 1s linear infinite;
   position: fixed;
   top: 50%;
-  left: 40%;
+  left: 50%;
   transform: translate(-50%, -50%);
 }
 
+#searchBar {
+  background-color: #efe6dd;
+  color: #400000;
+  border: 1px solid #cccccc;
+  border-radius: 25px;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+#searchBar:focus {
+  border-color: #eaae93;
+  box-shadow: 0 0 10px rgba(234, 174, 147, 0.7);
+}
+
+#searchBar::placeholder {
+  color: rgba(64, 0, 0, 0.6);
+  font-style: italic;
+}
+
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.edit-button {
+  color: #400000;
 }
 
 
-#menu li {
-  margin-right: 15px; /* Add spacing between navigation items */
+th span {
+  margin-left: 5px;
+  font-weight: bold;
 }
 
-#menu li a {
-  text-decoration: none; /* Ensure clean link styles */
+th span:empty {
+  visibility: hidden;
 }
+
+th span::after {
+  color: #400000;
+  font-size: 0.8rem;
+}
+
+
