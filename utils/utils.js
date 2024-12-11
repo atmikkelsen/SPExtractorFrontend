@@ -126,19 +126,18 @@ export async function handleFetch(url, options) {
   const response = await fetch(url, options);
 
   if (!response.ok) {
-    let errorMessage = "An error occurred";
+    let errorMessage = "An error occurred"; // Default error message
     try {
-      const errorData = await response.json(); // Parse the error JSON
-      errorMessage = errorData.message || errorMessage; // Use the error message if available
+      const errorData = await response.json(); // Parse JSON error response
+      errorMessage = errorData.error || errorData.message || errorMessage; // Extract the error field
     } catch (err) {
       console.error("Failed to parse error response:", err);
     }
-    throw new Error(errorMessage); // Throw a proper error message
+    throw new Error(errorMessage); // Throw the error
   }
 
-  return await response.json(); // Return the JSON response if successful
+  return await response.json(); // Return JSON if successful
 }
-
 
 export function renderTableRows(items, rowTemplateFn) {
   const tableBody = document.getElementById("table-rows");
@@ -151,7 +150,7 @@ export function renderTableRows(items, rowTemplateFn) {
     tableBody.innerHTML = `
       <tr>
         <td colspan="3" style="text-align: center; font-style: italic;">
-          No items found
+          Fandt ingen resultater
         </td>
       </tr>`;
     return;

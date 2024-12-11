@@ -28,13 +28,25 @@ ul a.active:hover {
   
 }
 
+#content {
+  margin: 0 auto !important;
+  padding: 1rem;
+  width: 100% !important;
+  box-sizing: border-box; 
+}
+
+
+
+
+
 .template input {
   background-color: #efe6dd;
   color: #400000;
   border: 1px solid #cccccc;
   padding: 8px;
-  border-radius: 50px;
+  border-radius: 5px;
   width: 40%;
+  height: auto;
   transition: all 0.3s ease;
 }
 
@@ -72,6 +84,11 @@ ul a.active:hover {
   color: #400000;
   font-family: "Poppins", sans-serif;
 }
+.content {
+  padding: 1rem;
+  flex: 1;
+  width: 100%;
+}
 
 
 
@@ -81,6 +98,10 @@ ul a.active:hover {
   overflow: hidden;
   border: 1px solid #eaae93;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  table-layout: auto; /* Allow columns to resize based on content */
+  
+
+  width: 100%;
   
 }
 
@@ -112,6 +133,32 @@ ul a.active:hover {
 .template table tr:nth-child(odd) {
   background-color: #ffffff;
 }
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .table th,
+  .table td {
+    padding: 10px; /* Reduce padding on smaller screens */
+    font-size: 0.8rem; /* Reduce font size for better fit */
+  }
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2) {
+  max-width: 300px; /* Set a max width for URL column */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Truncate overflowing text with ellipsis */
+  white-space: nowrap;
+}
+.table th:nth-child(1),
+.table td:nth-child(1) {
+  max-width: 300px; /* Set a max width for URL column */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Truncate overflowing text with ellipsis */
+  white-space: nowrap;
+}
+
+
+
 
 .button-small {
   padding: 0.25rem 1rem;
@@ -146,13 +193,14 @@ ul a.active:hover {
 #searchBar {
   background-color: #efe6dd;
   color: #400000;
-  border: 1px solid #cccccc;
-  border-radius: 25px;
+  border: 1px solid #400000;
+  border-radius: 15px;
   padding: 0.5rem;
   transition: all 0.3s ease;
 }
 
 #searchBar:focus {
+
   border-color: #eaae93;
   box-shadow: 0 0 10px rgba(234, 174, 147, 0.7);
 }
@@ -188,5 +236,6 @@ th span::after {
   color: #400000;
   font-size: 0.8rem;
 }
+
 
 

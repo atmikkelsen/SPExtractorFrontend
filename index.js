@@ -58,8 +58,8 @@ window.addEventListener("load", async () => {
 
           // Parse route and call updateTabs
           const route = match.url.split("/")[1];
-          const siteId = match.data?.siteId || null; // Optional
-          const driveId = match.data?.driveId || null; // Optional
+          const siteId = match.data?.siteId || null;
+          const driveId = match.data?.driveId || null; 
 
           updateTabs(route, siteId, driveId); // Safely pass siteId only when available
         } catch (error) {

@@ -11,26 +11,30 @@
 </head>
 <body>
   <div class="template">
-    <br />
+
     <div class="search-container">
-      <input type="text" id="searchBar" placeholder="Søg efter navn eller..." />
+      <input type="text" id="searchBar" placeholder="Søg efter navn..." />
     </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Navn på drevet</th>
-          <th>URL'en</th>
-          <th>Sidst ændret:</th>
-          <th>Antal filer:</th>
-        </tr>
-      </thead>
-      <tbody id="table-rows"></tbody>
-    </table>
+  
+    <div class="table-container">
+      <table class="template table">
+        <thead>
+          <tr>
+            <th>Navn på drevet</th>
+            <th>URL</th>
+            <th>Sidst ændret:</th>
+            <th>Antal filer</th>
+          </tr>
+        </thead>
+        <tbody id="table-rows"></tbody>
+      </table>
+    </div>
+
     <div id="loading-spinner" style="display: none;">
       <div class="spinner"></div>
     </div>
     <p id="error" style="color: red"></p>
-    <script type="module" src="pages/sites/sites.js"></script>
   </div>
+  
 </body>
 </html>
