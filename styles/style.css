@@ -99,8 +99,6 @@ ul a.active:hover {
   border: 1px solid #eaae93;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   table-layout: auto; /* Allow columns to resize based on content */
-  
-
   width: 100%;
   
 }
@@ -157,7 +155,21 @@ ul a.active:hover {
   white-space: nowrap;
 }
 
-
+.total-file-count-button {
+  font-size: 0.875em;
+  padding: 0.25rem;
+  color: #400000;
+  border-radius: 10px;
+  border: 1px solid #eaae93;
+  transition: border-color 0.5s, box-shadow 0.5s, background-color 0.5s, color 0.5s;
+}
+.total-file-count-button:hover {
+  background-color: #400000;
+  border: 1px solid #eaae93;
+  color: #ffffff;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
+}
 
 
 .button-small {
@@ -188,6 +200,17 @@ ul a.active:hover {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.tinyspinner {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #eaae93;
+  border-radius: 50%;
+  border-top: 2px solid #400000;
+  animation: spin 1s linear infinite;
+  margin-left: 5px;
 }
 
 #searchBar {
