@@ -24,18 +24,24 @@ function fileRowTemplate(file) {
     </tr>
   `;
 }
-
 export async function initFiles(driveId) {
-
   showSpinner();
   try {
+    // Fetch the drive details
     const drive = await handleFetch(`${API_URL}/drives/${driveId}`, makeOptions("GET", null, true));
-    updateTab("current-drive-tab", drive.name, `/files/${driveId}`);
-    updateTab("current-site-tab", drive.siteName, `/drives/${drive.siteId}`);
 
+    // Update the navbar tabs using siteName and driveName
+    const siteName = drive.siteName || "Unknown Site"; // Fallback if siteName is null
+    const driveName = drive.name || "Unknown Drive";
+
+    updateTab("current-drive-tab", driveName, `/files/${driveId}`);
+    updateTab("current-site-tab", siteName, `/drives/${drive.siteId}`);
+
+    // Fetch the files
     const files = await handleFetch(`${API_ENDPOINT}?driveId=${driveId}`, makeOptions("GET", null, true));
     renderTableRows(files, fileRowTemplate);
 
+    // Setup search bar functionality
     setupSearchBar(
       "searchBar",
       files,
@@ -44,6 +50,7 @@ export async function initFiles(driveId) {
       (filteredFiles) => renderTableRows(filteredFiles, fileRowTemplate)
     );
 
+    // Initialize file sorting
     initSorting(files);
 
   } catch (error) {

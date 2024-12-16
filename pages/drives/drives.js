@@ -34,7 +34,6 @@ function driveRowTemplate(drive) {
     </tr>
   `;
 }
-
 export async function initDrives(siteId) {
   showSpinner();
   try {
@@ -42,15 +41,17 @@ export async function initDrives(siteId) {
       `${API_URL}/sites/${siteId}`,
       makeOptions("GET", null, true)
     );
-    updateTab("current-site-tab", site.displayName, `/drives/${siteId}`);
 
+    // Pass the site name when fetching drives
     const drives = await handleFetch(
-      `${API_ENDPOINT}?siteId=${siteId}`,
+      `${API_ENDPOINT}?siteId=${siteId}&siteName=${encodeURIComponent(site.displayName)}`,
       makeOptions("GET", null, true)
     );
+    
+
+    updateTab("current-site-tab", site.displayName, `/drives/${siteId}`);
     renderTableRows(drives, driveRowTemplate);
 
-    // Fetch file count for each drive
     drives.forEach((drive) => fetchFileCount(drive.id));
 
     setupSearchBar(
@@ -68,6 +69,7 @@ export async function initDrives(siteId) {
     hideSpinner();
   }
 }
+
 
 async function fetchFileCount(driveId) {
   const fileCountCell = document.getElementById(`file-count-${driveId}`);

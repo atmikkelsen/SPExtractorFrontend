@@ -39,6 +39,7 @@ function updateTabs(route, siteId = null, driveId = null) {
   }
 }
 
+
 // Router initialization
 window.addEventListener("load", async () => {
   const templates = {
