@@ -189,6 +189,32 @@ ul a.active:hover {
   transform: scale(1.1);
 }
 
+.button-large {
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 25px;
+  color: #400000;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaae93;
+  transition: border-color 0.5s, box-shadow 0.5s, background-color 0.5s, color 0.5s;
+}
+
+.button-large:hover {
+  background-color: #eaae93;
+  color: #ffffff;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+
+.login-prompt {
+  text-align: center;
+  margin-top: 50px;
+}
+
+
 .spinner {
   border: 20px solid #eaae93;
   border-top: 20px solid #400000;

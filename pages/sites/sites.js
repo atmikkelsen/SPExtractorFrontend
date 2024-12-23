@@ -1,5 +1,6 @@
-import { setupSearchBar, renderTableRows, handleFetch, makeOptions } from "../../utils/utils.js";
+import { setupSearchBar, renderTableRows, handleFetch, makeOptions, updateLoginStatus } from "../../utils/utils.js";
 import { showSpinner, hideSpinner } from "../../utils/spinner.js";
+import { loginAndGetToken } from "../../server/auth.js";
 import { API_URL } from "../../server/settings.js";
 
 const API_ENDPOINT = `${API_URL}/sites`;
@@ -35,7 +36,9 @@ export async function initSites() {
     buttons.forEach((button) => {
       button.addEventListener("click", () => {
         const siteId = button.getAttribute("data-site-id");
-        fetchTotalFileCount(siteId, button);
+        const siteName = sites.find((site) => site.id === siteId).displayName;
+
+        fetchTotalFileCount(siteId, siteName, button);
       });
     });
 
@@ -49,13 +52,19 @@ export async function initSites() {
     );
   } catch (error) {
     console.error("Error fetching sites:", error.message);
-    document.getElementById("error").textContent = error.message;
+
+    // Check if the error indicates a missing or invalid token
+    if (error.message.includes("token")) {
+      displayOAuthLogin(); // Display the OAuth login button
+    } else {
+      document.getElementById("error").textContent = error.message;
+    }
   } finally {
     hideSpinner();
   }
 }
 
-async function fetchTotalFileCount(siteId, button) {
+async function fetchTotalFileCount(siteId, siteName, button) {
   const totalFileCountSpan = document.getElementById(`total-file-count-${siteId}`);
   
   // Hide the button and show "Loading..." with a spinner
@@ -67,9 +76,10 @@ async function fetchTotalFileCount(siteId, button) {
 
   try {
     const drives = await handleFetch(
-      `${API_URL}/drives?siteId=${siteId}`,
+      `${API_URL}/drives?siteId=${siteId}&siteName=${siteName}`,
       makeOptions("GET", null, true)
     );
+  
 
     // Use Promise.all to fetch file counts for all drives concurrently
     const fileCounts = await Promise.all(
@@ -91,4 +101,29 @@ async function fetchTotalFileCount(siteId, button) {
     totalFileCountSpan.textContent = "Error";
     button.style.display = "inline"; // Show the button again if there's an error
   }
+}
+
+function displayOAuthLogin() {
+  const contentElement = document.getElementById("content");
+  contentElement.innerHTML = `
+    <div class="logged-out-container">
+      <h2>Du er ikke logget ind</h2>
+      <button id="login-button" class="contrast button-large">Log In</button>
+    </div>
+  `;
+
+  const loginButton = document.getElementById("login-button");
+  loginButton.addEventListener("click", async () => {
+    try {
+      const token = await loginAndGetToken();
+      if (token) {
+        localStorage.setItem("authToken", token);
+        updateLoginStatus(); // Update the login/logout button styles
+        location.reload(); // Reload the page to reinitialize
+      }
+    } catch (error) {
+      console.error("Login failed:", error.message);
+      alert("Failed to log in. Please try again.");
+    }
+  });
 }

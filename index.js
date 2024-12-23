@@ -1,5 +1,5 @@
 import "https://unpkg.com/navigo";
-import { setActiveLink, renderHtml, loadHtml } from "./utils/utils.js";
+import { setActiveLink, renderHtml, loadHtml, updateLoginStatus } from "./utils/utils.js";
 import { loginAndGetToken, logout } from "./server/auth.js";
 import { initSites, fetchSite } from "./pages/sites/sites.js";
 import { initDrives, fetchDrive } from "./pages/drives/drives.js";
@@ -133,10 +133,10 @@ window.addEventListener("load", async () => {
 
 document.getElementById("loginButton").addEventListener("click", async () => {
   try {
-    const token = await loginAndGetToken(); // Replace with your actual login logic
-    localStorage.setItem("authToken", token); // Store the token in localStorage
-    alert("Login successful!");
-    updateLoginStatus(); // Update the UI
+    const token = await loginAndGetToken();
+    localStorage.setItem("authToken", token); 
+    updateLoginStatus(); 
+    location.reload(); 
   } catch (error) {
     console.error("Login failed:", error.message);
     alert("Login failed. Please try again.");
@@ -148,8 +148,9 @@ document.getElementById("logoutButton").addEventListener("click", () => {
   try {
     localStorage.removeItem("authToken"); // Remove the token from localStorage
     logout();
-    alert("Logged out successfully!");
     updateLoginStatus(); // Update the UI
+    location.reload(); 
+
   } catch (error) {
     console.error("Logout failed:", error.message);
     alert("Logout failed. Please try again.");
@@ -177,19 +178,4 @@ function displayError(message) {
   }
 }
 
-function updateLoginStatus() {
-  const loginButton = document.getElementById("loginButton");
-  const logoutButton = document.getElementById("logoutButton");
 
-  const token = localStorage.getItem("authToken"); // Check for token in localStorage
-
-  if (token) {
-    // User is logged in
-    loginButton.style.display = "none";
-    logoutButton.style.display = "inline";
-  } else {
-    // User is logged out
-    loginButton.style.display = "inline";
-    logoutButton.style.display = "none";
-  }
-}

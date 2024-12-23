@@ -15,33 +15,42 @@ function fileRowTemplate(file) {
       : file.webUrl;
 
   return `
-    <tr>
+    <tr id="file-row-${file.id}">
       <td>${file.name}</td>
       <td><a href="${file.webUrl}" target="_blank">${truncatedUrl}</a></td>
       <td>${fileSize}</td>
       <td>${formattedDate}</td>
       <td>${file.lastModifiedByDisplayName || "Unknown"}</td>
+      <td>
+        <a class="delete-button" data-file-id="${file.id}" >Delete</a>
+      </td>
     </tr>
   `;
 }
+
 export async function initFiles(driveId) {
   showSpinner();
   try {
-    // Fetch the drive details
     const drive = await handleFetch(`${API_URL}/drives/${driveId}`, makeOptions("GET", null, true));
-
-    // Update the navbar tabs using siteName and driveName
-    const siteName = drive.siteName || "Unknown Site"; // Fallback if siteName is null
+    const siteName = drive.siteName || "Unknown Site";
     const driveName = drive.name || "Unknown Drive";
 
     updateTab("current-drive-tab", driveName, `/files/${driveId}`);
     updateTab("current-site-tab", siteName, `/drives/${drive.siteId}`);
 
-    // Fetch the files
     const files = await handleFetch(`${API_ENDPOINT}?driveId=${driveId}`, makeOptions("GET", null, true));
     renderTableRows(files, fileRowTemplate);
 
-    // Setup search bar functionality
+    // Attach delete button event listeners
+    document.querySelectorAll(".delete-button").forEach((button) => {
+      button.addEventListener("click", async (event) => {
+        const fileId = button.getAttribute("data-file-id");
+        if (confirm("Are you sure you want to delete this file?")) {
+          await deleteFile(fileId, driveId);
+        }
+      });
+    });
+
     setupSearchBar(
       "searchBar",
       files,
@@ -50,7 +59,6 @@ export async function initFiles(driveId) {
       (filteredFiles) => renderTableRows(filteredFiles, fileRowTemplate)
     );
 
-    // Initialize file sorting
     initSorting(files);
 
   } catch (error) {
@@ -60,6 +68,34 @@ export async function initFiles(driveId) {
     hideSpinner();
   }
 }
+
+async function deleteFile(fileId, driveId) {
+  if (!fileId) {
+    console.error("File ID is undefined.");
+    alert("Unable to delete file: File ID is missing.");
+    return;
+  }
+
+  const deleteEndpoint = `${API_ENDPOINT}/${driveId}/items/${fileId}`;
+  showSpinner();
+
+  try {
+    const response = await fetch(deleteEndpoint, makeOptions("DELETE", null, true));
+    if (response.ok) {
+      alert("File deleted successfully.");
+      document.getElementById(`file-row-${fileId}`).remove(); // Remove the row from the table
+    } else {
+      const error = await response.json();
+      alert(`Failed to delete file: ${error.message}`);
+    }
+  } catch (error) {
+    console.error("Error deleting file:", error.message);
+    alert("An error occurred while deleting the file.");
+  } finally {
+    hideSpinner();
+  }
+}
+
 
 function initSorting(files) {
   let isSizeAscending = true;

@@ -172,3 +172,20 @@ export function updateTab(tabId, text, href) {
   tab.querySelector("a").textContent = text;
   tab.querySelector("a").setAttribute("href", href);
 }
+
+export function updateLoginStatus() {
+  const loginButton = document.getElementById("loginButton");
+  const logoutButton = document.getElementById("logoutButton");
+
+  const token = localStorage.getItem("authToken"); // Check for token in localStorage
+
+  if (token) {
+    // User is logged in
+    loginButton.style.display = "none";
+    logoutButton.style.display = "inline";
+  } else {
+    // User is logged out
+    loginButton.style.display = "inline";
+    logoutButton.style.display = "none";
+  }
+}
