@@ -1,14 +1,24 @@
-import { setupSearchBar, renderTableRows, handleFetch, makeOptions, updateLoginStatus } from "../../utils/utils.js";
+import {
+  setupSearchBar,
+  renderTableRows,
+  handleFetch,
+  makeOptions,
+  updateLoginStatus,
+} from "../../utils/utils.js";
 import { showSpinner, hideSpinner } from "../../utils/spinner.js";
 import { loginAndGetToken } from "../../server/auth.js";
 import { API_URL } from "../../server/settings.js";
 
 const API_ENDPOINT = `${API_URL}/sites`;
-
+// Fetches data for a specific site
 export async function fetchSite(siteId) {
-  return handleFetch(`${API_ENDPOINT}/${siteId}`, makeOptions("GET", null, true));
+  return handleFetch(
+    `${API_ENDPOINT}/${siteId}`,
+    makeOptions("GET", null, true)
+  );
 }
 
+// Template for a row in the sites table
 function siteRowTemplate(site) {
   return `
     <tr>
@@ -24,11 +34,15 @@ function siteRowTemplate(site) {
   `;
 }
 
+// Initializes the display of sites
 export async function initSites() {
   showSpinner();
   try {
-    const sites = await handleFetch(API_ENDPOINT, makeOptions("GET", null, true));
-
+    // Fetch all sites
+    const sites = await handleFetch(
+      API_ENDPOINT,
+      makeOptions("GET", null, true)
+    );
     renderTableRows(sites, siteRowTemplate);
 
     // Attach event listeners to the "Get Total File Count" buttons
@@ -41,7 +55,8 @@ export async function initSites() {
         fetchTotalFileCount(siteId, siteName, button);
       });
     });
-
+    
+    // Setup search bar for filtering sites
     setupSearchBar(
       "searchBar",
       sites,
@@ -65,8 +80,10 @@ export async function initSites() {
 }
 
 async function fetchTotalFileCount(siteId, siteName, button) {
-  const totalFileCountSpan = document.getElementById(`total-file-count-${siteId}`);
-  
+  const totalFileCountSpan = document.getElementById(
+    `total-file-count-${siteId}`
+  );
+
   // Hide the button and show "Loading..." with a spinner
   button.style.display = "none";
   totalFileCountSpan.innerHTML = `
@@ -79,7 +96,6 @@ async function fetchTotalFileCount(siteId, siteName, button) {
       `${API_URL}/drives?siteId=${siteId}&siteName=${siteName}`,
       makeOptions("GET", null, true)
     );
-  
 
     // Use Promise.all to fetch file counts for all drives concurrently
     const fileCounts = await Promise.all(

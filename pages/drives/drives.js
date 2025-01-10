@@ -11,6 +11,7 @@ import { API_URL } from "../../server/settings.js";
 
 const API_ENDPOINT = `${API_URL}/drives`;
 
+//Gets data for a specific drive
 export async function fetchDrive(driveId) {
   return handleFetch(
     `${API_ENDPOINT}/${driveId}`,
@@ -18,6 +19,7 @@ export async function fetchDrive(driveId) {
   );
 }
 
+//Template for a row in the drives table
 function driveRowTemplate(drive) {
   const formattedDate = formatDate(drive.lastModifiedDateTime);
 
@@ -34,20 +36,24 @@ function driveRowTemplate(drive) {
     </tr>
   `;
 }
+
+//Initializes the display of drives for a specific site
 export async function initDrives(siteId) {
   showSpinner();
   try {
+    //Gets data for the specific site
     const site = await handleFetch(
       `${API_URL}/sites/${siteId}`,
       makeOptions("GET", null, true)
     );
 
-    // Pass the site name when fetching drives
+    //Gets data for the specific drives
     const drives = await handleFetch(
-      `${API_ENDPOINT}?siteId=${siteId}&siteName=${encodeURIComponent(site.displayName)}`,
+      `${API_ENDPOINT}?siteId=${siteId}&siteName=${encodeURIComponent(
+        site.displayName
+      )}`,
       makeOptions("GET", null, true)
     );
-    
 
     updateTab("current-site-tab", site.displayName, `/drives/${siteId}`);
     renderTableRows(drives, driveRowTemplate);
@@ -70,17 +76,17 @@ export async function initDrives(siteId) {
   }
 }
 
-
+//F
 async function fetchFileCount(driveId) {
   const fileCountCell = document.getElementById(`file-count-${driveId}`);
-  fileCountCell.textContent = "Loading..."; // Show a loading state
+  fileCountCell.textContent = "Loading...";
 
   try {
     const files = await handleFetch(
       `${API_URL}/files?driveId=${driveId}`,
       makeOptions("GET", null, true)
     );
-    fileCountCell.textContent = files.length; // Display file count
+    fileCountCell.textContent = files.length;
   } catch (error) {
     console.error("Error fetching drives count:", error.message);
     fileCountCell.textContent = "Error";

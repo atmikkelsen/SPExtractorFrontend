@@ -8,37 +8,6 @@ import { initFiles } from "./pages/files/files.js";
 let siteName = ""; // Store the current site name globally
 let driveName = ""; // Store the current drive name globally
 
-function updateTabs(route, siteId = null, driveId = null) {
-  const currentSiteTab = document.getElementById("current-site-tab");
-  const currentDriveTab = document.getElementById("current-drive-tab");
-
-  // Hide both tabs initially
-  currentSiteTab.style.display = "none";
-  currentDriveTab.style.display = "none";
-
-  if (route === "sites") {
-    currentSiteTab.style.display = "inline";
-    currentSiteTab.querySelector("a").textContent = "Mine sider";
-    currentSiteTab.querySelector("a").setAttribute("href", "#/sites");
-    currentSiteTab.querySelector("a").classList.add("active");
-  } else if (route === "drives" && siteId) {
-    currentSiteTab.style.display = "inline";
-    currentSiteTab.querySelector("a").textContent = siteName || "Site";
-    currentSiteTab.querySelector("a").setAttribute("href", `#/drives/${siteId}`);
-    currentSiteTab.querySelector("a").classList.add("active");
-  } else if (route === "files" && driveId) {
-    currentSiteTab.style.display = "inline";
-    currentSiteTab.querySelector("a").textContent = siteName || "Unknown Site";
-    currentSiteTab.querySelector("a").setAttribute("href", `#/drives/${siteId || ''}`);
-    currentSiteTab.querySelector("a").classList.remove("active");
-
-    currentDriveTab.style.display = "inline";
-    currentDriveTab.querySelector("a").textContent = driveName || "Drive";
-    currentDriveTab.querySelector("a").setAttribute("href", `#/files/${driveId}`);
-    currentDriveTab.querySelector("a").classList.add("active");
-  }
-}
-
 
 // Router initialization
 window.addEventListener("load", async () => {
@@ -131,6 +100,7 @@ window.addEventListener("load", async () => {
     }
 });
 
+// Handle login button click
 document.getElementById("loginButton").addEventListener("click", async () => {
   try {
     const token = await loginAndGetToken();
@@ -157,16 +127,19 @@ document.getElementById("logoutButton").addEventListener("click", () => {
   }
 });
 
+// Handle error messages
 window.onerror = (errorMsg, url, lineNumber, column, errorObj) => {
   alert(
     `Error: ${errorMsg} Script: ${url} Line: ${lineNumber} Column: ${column} StackTrace: ${errorObj}`
   );
 };
 
+// Update login status on page load
 window.addEventListener("load", () => {
   updateLoginStatus();
 });
 
+// Display error message in the UI
 function displayError(message) {
   const errorElement = document.getElementById("error");
   if (errorElement) {
@@ -175,6 +148,38 @@ function displayError(message) {
     errorElement.style.display = "block"; // Ensure the error message is visible
   } else {
     console.error("Error element not found in the DOM.");
+  }
+}
+
+// Update the active tab based on the route
+function updateTabs(route, siteId = null, driveId = null) {
+  const currentSiteTab = document.getElementById("current-site-tab");
+  const currentDriveTab = document.getElementById("current-drive-tab");
+
+  // Hide both tabs initially
+  currentSiteTab.style.display = "none";
+  currentDriveTab.style.display = "none";
+
+  if (route === "sites") {
+    currentSiteTab.style.display = "inline";
+    currentSiteTab.querySelector("a").textContent = "Mine sider";
+    currentSiteTab.querySelector("a").setAttribute("href", "#/sites");
+    currentSiteTab.querySelector("a").classList.add("active");
+  } else if (route === "drives" && siteId) {
+    currentSiteTab.style.display = "inline";
+    currentSiteTab.querySelector("a").textContent = siteName || "Site";
+    currentSiteTab.querySelector("a").setAttribute("href", `#/drives/${siteId}`);
+    currentSiteTab.querySelector("a").classList.add("active");
+  } else if (route === "files" && driveId) {
+    currentSiteTab.style.display = "inline";
+    currentSiteTab.querySelector("a").textContent = siteName || "Unknown Site";
+    currentSiteTab.querySelector("a").setAttribute("href", `#/drives/${siteId || ''}`);
+    currentSiteTab.querySelector("a").classList.remove("active");
+
+    currentDriveTab.style.display = "inline";
+    currentDriveTab.querySelector("a").textContent = driveName || "Drive";
+    currentDriveTab.querySelector("a").setAttribute("href", `#/files/${driveId}`);
+    currentDriveTab.querySelector("a").classList.add("active");
   }
 }
 

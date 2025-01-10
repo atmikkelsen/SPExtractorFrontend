@@ -1,14 +1,24 @@
-import { setupSearchBar, renderTableRows, handleFetch, makeOptions, formatDate, updateTab } from "../../utils/utils.js";
+import {
+  setupSearchBar,
+  renderTableRows,
+  handleFetch,
+  makeOptions,
+  formatDate,
+  updateTab,
+} from "../../utils/utils.js";
 import { showSpinner, hideSpinner } from "../../utils/spinner.js";
 import { API_URL } from "../../server/settings.js";
 import { fetchDrive } from "../drives/drives.js";
 
 const API_ENDPOINT = `${API_URL}/files`;
 
+//Template for a row in the files table
 function fileRowTemplate(file) {
   const MAX_URL_LENGTH = 100;
   const formattedDate = formatDate(file.lastModifiedDateTime);
-  const fileSize = file.size ? `${(file.size / (1024 * 1024)).toFixed(2)} MB` : "N/A";
+  const fileSize = file.size
+    ? `${(file.size / (1024 * 1024)).toFixed(2)} MB`
+    : "N/A";
   const truncatedUrl =
     file.webUrl.length > MAX_URL_LENGTH
       ? `${file.webUrl.substring(0, MAX_URL_LENGTH)}...`
@@ -28,17 +38,25 @@ function fileRowTemplate(file) {
   `;
 }
 
+//Initializes the display of files for a specific drive
 export async function initFiles(driveId) {
   showSpinner();
   try {
-    const drive = await handleFetch(`${API_URL}/drives/${driveId}`, makeOptions("GET", null, true));
+    //Gets data for the specific drive
+    const drive = await handleFetch(
+      `${API_URL}/drives/${driveId}`,
+      makeOptions("GET", null, true)
+    );
     const siteName = drive.siteName || "Unknown Site";
     const driveName = drive.name || "Unknown Drive";
 
     updateTab("current-drive-tab", driveName, `/files/${driveId}`);
     updateTab("current-site-tab", siteName, `/drives/${drive.siteId}`);
 
-    const files = await handleFetch(`${API_ENDPOINT}?driveId=${driveId}`, makeOptions("GET", null, true));
+    const files = await handleFetch(
+      `${API_ENDPOINT}?driveId=${driveId}`,
+      makeOptions("GET", null, true)
+    );
     renderTableRows(files, fileRowTemplate);
 
     // Attach delete button event listeners
@@ -55,12 +73,12 @@ export async function initFiles(driveId) {
       "searchBar",
       files,
       (term) => (file) =>
-        file.name.toLowerCase().includes(term) || file.webUrl.toLowerCase().includes(term),
+        file.name.toLowerCase().includes(term) ||
+        file.webUrl.toLowerCase().includes(term),
       (filteredFiles) => renderTableRows(filteredFiles, fileRowTemplate)
     );
 
     initSorting(files);
-
   } catch (error) {
     console.error("Error fetching files:", error.message);
     document.getElementById("error").textContent = error.message;
@@ -69,6 +87,7 @@ export async function initFiles(driveId) {
   }
 }
 
+//Remove a file from the drive
 async function deleteFile(fileId, driveId) {
   if (!fileId) {
     console.error("File ID is undefined.");
@@ -80,7 +99,10 @@ async function deleteFile(fileId, driveId) {
   showSpinner();
 
   try {
-    const response = await fetch(deleteEndpoint, makeOptions("DELETE", null, true));
+    const response = await fetch(
+      deleteEndpoint,
+      makeOptions("DELETE", null, true)
+    );
     if (response.ok) {
       alert("File deleted successfully.");
       document.getElementById(`file-row-${fileId}`).remove(); // Remove the row from the table
@@ -96,7 +118,7 @@ async function deleteFile(fileId, driveId) {
   }
 }
 
-
+//Initializing sorting functionality for the files table
 function initSorting(files) {
   let isSizeAscending = true;
   let isDateAscending = true;
@@ -111,6 +133,7 @@ function initSorting(files) {
     dateIndicator.textContent = ""; // Clear date indicator
   }
 
+  // Add event listener for sorting by size
   sizeHeader.addEventListener("click", () => {
     const sortedFiles = [...files].sort((a, b) =>
       isSizeAscending
@@ -123,6 +146,7 @@ function initSorting(files) {
     renderTableRows(sortedFiles, fileRowTemplate);
   });
 
+  // Add event listener for sorting by date
   dateHeader.addEventListener("click", () => {
     const sortedFiles = [...files].sort((a, b) =>
       isDateAscending
