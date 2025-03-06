@@ -103,8 +103,7 @@ window.addEventListener("load", async () => {
 // Handle login button click
 document.getElementById("loginButton").addEventListener("click", async () => {
   try {
-    const token = await loginAndGetToken();
-    localStorage.setItem("authToken", token); 
+    await loginAndGetToken();
     updateLoginStatus(); 
     location.reload(); 
   } catch (error) {
@@ -116,7 +115,6 @@ document.getElementById("loginButton").addEventListener("click", async () => {
 // Handle logout button click
 document.getElementById("logoutButton").addEventListener("click", () => {
   try {
-    localStorage.removeItem("authToken"); // Remove the token from localStorage
     logout();
     updateLoginStatus(); // Update the UI
     location.reload(); 

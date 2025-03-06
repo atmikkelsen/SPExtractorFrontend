@@ -68,7 +68,7 @@ export async function initSites() {
   } catch (error) {
     console.error("Error fetching sites:", error.message);
 
-    // Check if the error indicates a missing or invalid token
+    // Check if the error indicates a missing or invalid accessToken
     if (error.message.includes("token")) {
       displayOAuthLogin(); // Display the OAuth login button
     } else {
@@ -131,9 +131,8 @@ function displayOAuthLogin() {
   const loginButton = document.getElementById("login-button");
   loginButton.addEventListener("click", async () => {
     try {
-      const token = await loginAndGetToken();
-      if (token) {
-        localStorage.setItem("authToken", token);
+      const accessToken = await loginAndGetToken();
+      if (accessToken) {
         updateLoginStatus(); // Update the login/logout button styles
         location.reload(); // Reload the page to reinitialize
       }

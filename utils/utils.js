@@ -70,10 +70,10 @@ export async function handleHttpErrors(res) {
 }
 
 /**
- * HINT --> USE DOMPurify.santitize(..) to sanitize a full string of tags to be inserted
- * via innerHTLM
+ * HINT --> USE DOMPurify.sanitize(..) to sanitize a full string of tags to be inserted
+ * via innerHTML
  * Tablerows are required to be inside a table tag, so use this small utility function to
- * santitize a string with TableRows only (made from data with map)
+ * sanitize a string with TableRows only (made from data with map)
  * DOMPurify is available here, because it's imported in index.html, and as so available in all
  * your JavaScript files
  */
@@ -97,9 +97,9 @@ export function makeOptions(method, body, addToken, testToken = null) {
     opts.body = JSON.stringify(body);
   }
   if (addToken) {
-    const token = testToken || localStorage.getItem("token");
-    if (token) {
-      opts.headers.Authorization = "Bearer " + token;
+    const accessToken = testToken || localStorage.getItem("accessToken");
+    if (accessToken) {
+      opts.headers.Authorization = "Bearer " + accessToken;
     } else {
       throw new Error("No token found for Authorization, please login again");
     }
@@ -177,9 +177,9 @@ export function updateLoginStatus() {
   const loginButton = document.getElementById("loginButton");
   const logoutButton = document.getElementById("logoutButton");
 
-  const token = localStorage.getItem("authToken"); // Check for token in localStorage
+  const accessToken = localStorage.getItem("accessToken");
 
-  if (token) {
+  if (accessToken) {
     // User is logged in
     loginButton.style.display = "none";
     logoutButton.style.display = "inline";

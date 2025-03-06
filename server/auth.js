@@ -8,8 +8,8 @@ const msalConfig = {
     redirectUri: "https://localhost:3000",
   },
   cache: {
-    cacheLocation: "localStorage", // Recommended for SPAs
-    storeAuthStateInCookie: false, // Set to true if cookies are required
+    cacheLocation: "localStorage",
+    storeAuthStateInCookie: false,
   },
 };
 
@@ -17,8 +17,8 @@ const msalConfig = {
 const msalInstance = new msal.PublicClientApplication(msalConfig);
 
 /**
- * Logs in the user and retrieves the Bearer token.
- * Stores the token in `localStorage`.
+ * Logs in the user and retrieves the Bearer accessToken.
+ * Stores the accessToken in `localStorage`.
  */
 export async function loginAndGetToken() {
   const request = {
@@ -35,14 +35,14 @@ export async function loginAndGetToken() {
       scopes: request.scopes,
     });
 
-    localStorage.setItem("token", tokenResponse.accessToken);
+    localStorage.setItem("accessToken", tokenResponse.accessToken);
     return tokenResponse.accessToken;
   } catch (error) {
-    console.error("Error during login or token acquisition:", error);
+    console.error("Error during login or accessToken acquisition:", error);
 
     if (error instanceof msal.InteractionRequiredAuthError) {
       const tokenResponse = await msalInstance.acquireTokenPopup(request);
-      localStorage.setItem("token", tokenResponse.accessToken);
+      localStorage.setItem("accessToken", tokenResponse.accessToken);
       return tokenResponse.accessToken;
     }
 
@@ -55,6 +55,6 @@ export async function loginAndGetToken() {
  */
 export function logout() {
   msalInstance.logoutPopup();
-  localStorage.removeItem("token");
+  localStorage.removeItem("accessToken");
 }
  
